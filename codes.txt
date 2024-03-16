@@ -1,0 +1,87 @@
+QUESTION 1
+
+
+# Prompt the user to enter employee details
+read -p "Enter employee name: " name
+read -p "Enter hours worked: " hours_worked
+read -p "Enter rate per hour: " rate_per_hour
+
+# Calculate basic pay
+basic_pay=$(echo "$hours_worked * $rate_per_hour" | bc)
+
+# Calculate tax based on basic pay
+if (( $(echo "$basic_pay > 70000" | bc -l) )); then
+    tax=$(echo "0.25 * $basic_pay" | bc)
+elif (( $(echo "$basic_pay >= 15000 && $basic_pay <= 70000" | bc -l) )); then
+    tax=$(echo "0.15 * $basic_pay" | bc)
+else
+    tax=0
+fi
+
+# Calculate net pay
+net_pay=$(echo "$basic_pay - $tax" | bc)
+
+
+
+
+QUESTION 2
+
+
+#include <stdio.h>   // Standard input-output header file
+int main() {
+    int file_descriptor;  // File descriptor for the file
+    char buffer[200];     // Buffer to hold data read from the file
+
+    // Open a file named "example.txt" for read/write, create it if it doesn't exist, and set permissions to 0644 (read/write for owner, read for group and others)
+    file_descriptor = open("example.txt", O_RDWR | O_CREAT, 0644);
+    if (file_descriptor < 0) {  // Check if file opening failed
+        perror("Error opening file");
+        exit(1);
+    }
+
+    // Write "hello world" to the file
+    write(file_descriptor, "hello world", 11);
+
+    // Move the file pointer to the beginning of the file
+    lseek(file_descriptor, 0, SEEK_SET);
+
+    // Read from the file into the buffer
+    read(file_descriptor, buffer, 200);
+
+    // Print the content read from the file
+    printf("Content read from the file: %s\n", buffer);
+
+    // Close the file
+    close(file_descriptor);
+
+    return 0;
+}
+
+
+
+QUESTION 3
+
+
+#!/bin/bash
+
+# Prompt the user to enter customer details
+read -p "Enter customer ID: " customer_id
+read -p "Enter customer name: " customer_name
+read -p "Enter units consumed: " units_consumed
+
+# Calculate bill based on units consumed
+if [ $units_consumed -lt 200 ]; then
+    bill=$((units_consumed * 120))
+elif [ $units_consumed -ge 200 ] && [ $units_consumed -lt 400 ]; then
+    bill=$((units_consumed * 150))
+elif [ $units_consumed -ge 400 ] && [ $units_consumed -lt 600 ]; then
+    bill=$((units_consumed * 180))
+else
+    bill=$((units_consumed * 200))
+fi
+
+# Display total bill
+echo "Customer ID: $customer_id"
+echo "Customer Name: $customer_name"
+echo "Units Consumed: $units_consumed"
+echo "Total Bill: $bill"
